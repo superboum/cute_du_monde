@@ -6,6 +6,15 @@ const upload = multer({ dest: 'public/uploads/' })
 
 const app = express()
 const port = 3000
+
+let ip_addr = {}
+const vote_per_time_unit = 2
+setInterval(() => ip_addr = {}, 1000*60*60*24)
+const ip = req => req.headers['x-forwarded-for'] || req.connection.remoteAddress
+const avail_vote = ip => ip in ip_addr ? vote_per_time_unit - ip_addr[ip] : vote_per_time_unit
+const can_vote = ip => avail_vote(ip) > 0
+const has_voted = ip => ip in ip_addr ? ip_addr[ip]++ : ip_addr[ip] = 1
+
 app.set('view engine', 'pug')
 app.use(express.static('public'))
 
@@ -28,8 +37,8 @@ app.get('/', (req, res) => {
   db.all(
     "SELECT * FROM cote ORDER BY RANDOM() LIMIT 2",
     (err, rows) => {
-      console.log(rows)
-      res.render('index', {choix: rows})
+      //console.log(rows)
+      res.render('index', {choix: rows, remvote: avail_vote(ip(req))})
     })
 })
 
@@ -40,6 +49,10 @@ const maj_cote = (name, cote) =>
 
 app.get('/vote/win/:winner/loose/:looser', (req, res) => { 
   const [winner, looser] = [req.params.winner, req.params.looser]
+  if (!can_vote(ip(req))) {
+    res.status(403).send('Vous ne pouvez plus voter aujourd\'hui !')
+    return
+  }
 
   db.all(
     "SELECT * FROM cote WHERE name = ? or name = ?",
@@ -50,7 +63,7 @@ app.get('/vote/win/:winner/loose/:looser', (req, res) => {
       const loose_cote = nouvelle_cote(looser, winner, "loose", ds)
       
       Promise.all([maj_cote(winner, win_cote), maj_cote(looser, loose_cote)])
-        .then(() => res.redirect('/'))
+        .then(() => { has_voted(ip(req)); res.redirect('/') })
         .catch(err => { console.error(err); res.redirect('/') })
     })
 })
