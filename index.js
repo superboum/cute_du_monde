@@ -8,6 +8,7 @@ const app = express()
 const port = 3000
 
 let ip_addr = {}
+const ip_addr_ajout = {}
 const vote_per_time_unit = 12
 setInterval(() => ip_addr = {}, 1000*60*60*24)
 const ip = req => req.headers['x-forwarded-for'] || req.connection.remoteAddress
@@ -76,10 +77,15 @@ app.get('/classement', (req, res) =>
 app.get('/ajouter', (req, res) => res.render('ajouter', {}))
 
 app.post('/ajouter', upload.single('photo'), (req, res) => {
+  if (ip(req) in ip_addr_ajout) {
+    res.status(403).send('Vous ne pouvez plus envoyer de photo !')
+    return
+  }
   console.log("adding", req.body.nom, req.file.path)
   db.run(
     "INSERT INTO cote VALUES (?, ?, ?)",
     req.body.nom, 1500, req.file.path, err => {
+      ip_addr_ajout[ip(req)] = 1
       res.redirect('/')
     })
 })
