@@ -8,7 +8,7 @@ const app = express()
 const port = 3000
 
 let ip_addr = {}
-const vote_per_time_unit = 2
+const vote_per_time_unit = 12
 setInterval(() => ip_addr = {}, 1000*60*60*24)
 const ip = req => req.headers['x-forwarded-for'] || req.connection.remoteAddress
 const avail_vote = ip => ip in ip_addr ? vote_per_time_unit - ip_addr[ip] : vote_per_time_unit
