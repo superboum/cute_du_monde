@@ -4,16 +4,25 @@ block main
   .pure-g.vspace
     .pure-u-md-1-1
       .pure-g
-        .pure-u-1.pure-u-md-1-2
-          .encart
-            a(href="/vote/win/"+choix[0].name+"/loose/"+choix[1].name)
-              img.animal(src=choix[0].pic.replace("public", ""))
-              div= choix[0].name
-        .pure-u-1.pure-u-md-1-2
-          .encart
-            a(href="/vote/win/"+choix[1].name+"/loose/"+choix[0].name)
-              img.animal(src=choix[1].pic.replace("public", ""))
-              div= choix[1].name
+        if !choix
+          .pure-u-1.pure-u-md-1-2
+            .encart 
+              a(href="/init") Veuillez initialiser la BDD
+        else if choix.length < 2
+          .pure-u-1.pure-u-md-1-2
+            .encart
+              a(href="/ajouter") Veuillez ajouter des animaux mignons
+        else
+          .pure-u-1.pure-u-md-1-2
+            .encart
+              a(href="/vote/win/"+choix[0].name+"/loose/"+choix[1].name)
+                img.animal(src=choix[0].pic.replace("public", ""))
+                div= choix[0].name
+          .pure-u-1.pure-u-md-1-2
+            .encart
+              a(href="/vote/win/"+choix[1].name+"/loose/"+choix[0].name)
+                img.animal(src=choix[1].pic.replace("public", ""))
+                div= choix[1].name
       div(style="text-align: center")
         h3= "Cliquez sur l'animal le plus mignon ("+remvote+" vote(s) restant(s) aujourd'hui)"
         div Fin des votes le 28/02/2020, revenez par ici à cette date pour connaitre l'animal le plus <em>cute</em>.
