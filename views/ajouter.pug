@@ -1,0 +1,16 @@
+extends layout.pug
+
+block main
+  .pure-g
+    .pure-u-1-1
+      form.pure-form.pure-form-stacked(method="POST", action="/ajouter", enctype="multipart/form-data")
+        fieldset
+          legend Ajoutez la photo de votre petit animal mignon
+          
+          label.vspace(for="nom") Petit nom mignon
+          input(type="text", id="nom", placeholder="Rooky", name="nom")
+          
+          label.vspace(for="photo") Petite photo mignone
+          input(type="file", id="photo", name="photo")
+
+          input.vspace(type="submit", value="Envoi mignon").pure-button.pure-button-primary

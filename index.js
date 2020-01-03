@@ -55,8 +55,15 @@ app.get('/vote/win/:winner/loose/:looser', (req, res) => {
     })
 })
 
-app.post('/add', upload.single('photo'), (req, res) => {
-  console.log(req.body.nom, req.file.path)
+app.get('/classement', (req, res) =>
+  db.all('SELECT * FROM cote ORDER BY cote DESC LIMIT 50', (err, rows) =>
+    res.render('classement', {classement: rows, erreurs: err })
+  ))
+
+app.get('/ajouter', (req, res) => res.render('ajouter', {}))
+
+app.post('/ajouter', upload.single('photo'), (req, res) => {
+  console.log("adding", req.body.nom, req.file.path)
   db.run(
     "INSERT INTO cote VALUES (?, ?, ?)",
     req.body.nom, 1500, req.file.path, err => {

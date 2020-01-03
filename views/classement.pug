@@ -1,0 +1,13 @@
+extends layout.pug
+
+block main
+  .pure-g.vspace
+    each animal in classement
+      .pure-u-md-1-5
+        .encart
+          img.animal(src=animal.pic.replace("public", ""))
+          div
+            strong= Math.round(animal.cote)+" pts "
+            span= animal.name
+      
+     

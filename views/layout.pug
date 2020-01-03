@@ -1,0 +1,44 @@
+block root
+
+doctype html
+html
+  head
+    meta(charset="utf-8")
+    link(rel="stylesheet",href="https://unpkg.com/purecss@1.0.1/build/base-min.css")
+    link(rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/grids-min.css")
+    link(rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/grids-responsive-min.css")
+    link(rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/forms-min.css")
+    link(rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/buttons-min.css")
+    link(rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/menus-min.css")
+    title La cute du monde des animaux
+    style.
+      form.pure-form {
+        padding: 16px;
+      }
+      .vspace {
+        margin-top: 15px;
+      }
+      img.animal {
+        max-width: 100%;
+        max-height: 500px;
+        margin: auto;
+        display: block;
+      }
+      .encart {
+        text-align: center;
+        padding: 5px;
+      }
+    block head
+  body(style="margin:10px")
+    .pure-g
+      .pure-u-1
+        .pure-menu.pure-menu-horizontal
+          a.pure-menu-heading.pure-menu-link(href="/") LA CUTE DU MONDE DES ANIMAUX
+          ul.pure-menu-list
+            li.pure-menu-item
+              a.pure-menu-link(href="/") Voter
+            li.pure-menu-item
+              a.pure-menu-link(href="/classement") Classement
+            li.pure-menu-item
+              a.pure-menu-link(href="/ajouter") Ajoutez votre animal mignon
+    block main
